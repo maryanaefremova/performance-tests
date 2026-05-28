@@ -37,7 +37,7 @@ class OperationsGatewayGRPCClient(GRPCClient):
         """
         Инициализация клиента с указанным gRPC-каналом.
 
-        :param channel: gRPC-канал для подключения к AccountsGatewayService.
+        :param channel: gRPC-канал для подключения к OperationsGatewayService.
         """
         super().__init__(channel)
 
