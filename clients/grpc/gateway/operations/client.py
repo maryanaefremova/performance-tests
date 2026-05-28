@@ -165,6 +165,14 @@ class OperationsGatewayGRPCClient(GRPCClient):
             card_id=card_id, 
             account_id=account_id)
         return self.make_fee_operation_api(request)
+    
+    def make_top_up_operation(self, card_id: str, account_id: str) -> MakeTopUpOperationResponse:
+        request = MakeTopUpOperationRequest(
+            status=fake.proto_enum(OperationStatus),
+            amount=fake.amount(),
+            card_id=card_id, 
+            account_id=account_id)
+        return self.make_top_up_operation_api(request)
 
     def make_cashback_operation(self, card_id: str, account_id: str) -> MakeCashbackOperationResponse:
         request = MakeCashbackOperationRequest(
