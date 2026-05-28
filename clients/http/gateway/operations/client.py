@@ -147,7 +147,6 @@ class OperationsGatewayHTTPClient(HTTPClient):
         response = self.get_operation_api(operation_id)
         return GetOperationResponseSchema.model_validate_json(response.text)
         
-    
     def get_operation_receipt(self, operation_id: str) -> GetOperationReceiptResponseSchema:
         response = self.get_operation_receipt_api(operation_id)
         return GetOperationReceiptResponseSchema.model_validate_json(response.text)
