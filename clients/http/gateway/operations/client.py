@@ -1,5 +1,6 @@
 from httpx import Response, QueryParams
 
+from clients.http.client import HTTPClient, HTTPClientExtensions
 from clients.http.client import HTTPClient
 from clients.http.gateway.operations.schema import GetOperationsQuerySchema, GetOperationsSummaryQuerySchema, \
     MakeFeeOperationRequestSchema, MakeTopUpOperationRequestSchema, MakeCashbackOperationRequestSchema, \
@@ -19,44 +20,56 @@ class OperationsGatewayHTTPClient(HTTPClient):
 
     def get_operation_api(self, operation_id: str) -> Response:
         """
-        Получить информацию об операции.
+        Получает информацию об операции по её идентификатору.
 
-        :param operation_id: Идентификатор операции.
-        :return: Ответ от сервера (объект httpx.Response).
+        :param operation_id: Уникальный идентификатор операции.
+        :return: Объект httpx.Response с данными об операции.
         """
-        return self.get(f"/api/v1/operations/{operation_id}")
-    
+        return self.get(
+            f"/api/v1/operations/{operation_id}",
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/operations/{operation_id}")
+        )
+
     def get_operation_receipt_api(self, operation_id: str) -> Response:
         """
-        Получить чек по операции.
+        Получает чек по заданной операции.
 
-        :param operation_id: Идентификатор операции.
-        :return: Ответ от сервера (объект httpx.Response).
+        :param operation_id: Уникальный идентификатор операции.
+        :return: Объект httpx.Response с чеком по операции.
         """
-        return self.get(f"/api/v1/operations/operation-receipt/{operation_id}")
-    
+        return self.get(
+            f"/api/v1/operations/operation-receipt/{operation_id}",
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/operations/operation-receipt/{operation_id}")
+        )
+
     def get_operations_api(self, query: GetOperationsQuerySchema) -> Response:
         """
-        Выполняет GET-запрос на получение списка операций для определенного счета.
+        Получает список операций по счёту.
 
-        :param query: Словарь с accountId.
-        :return: Объект httpx.Response с данными о счетах.
+        :param query: Словарь с параметром accountId.
+        :return: Объект httpx.Response с операциями по счёту.
         """
         return self.get(
-            "/api/v1/operations", 
-            params=QueryParams(**query.model_dump(by_alias=True))
+            "/api/v1/operations",
+            params=QueryParams(**query.model_dump(by_alias=True)),
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/operations")
         )
-    
+
     def get_operations_summary_api(self, query: GetOperationsSummaryQuerySchema) -> Response:
         """
-        Выполняет GET-запрос на получение списка статистики по операциям для определенного счета.
+        Получает сводную статистику операций по счёту.
 
-        :param query: Словарь с accountId.
-        :return: Объект httpx.Response с данными о счетах.
+        :param query: Словарь с параметром accountId.
+        :return: Объект httpx.Response с агрегированной информацией.
         """
         return self.get(
-            "/api/v1/operations/operations-summary", 
-            params=QueryParams(**query.model_dump(by_alias=True))
+            "/api/v1/operations/operations-summary",
+            params=QueryParams(**query.model_dump(by_alias=True)),
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/operations/operations-summary")
         )
     
     def make_fee_operation_api(self, request: MakeFeeOperationRequestSchema) -> Response:

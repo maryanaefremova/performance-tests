@@ -1,5 +1,6 @@
 from httpx import Response
 
+from clients.http.client import HTTPClient, HTTPClientExtensions
 from clients.http.client import HTTPClient
 from clients.http.gateway.documents.schema import (
     GetTariffDocumentResponseSchema,
@@ -16,21 +17,29 @@ class DocumentsGatewayHTTPClient(HTTPClient):
 
     def get_tariff_document_api(self, account_id: str) -> Response:
         """
-        Получение тарифа по счету.
+        Получить тарифа по счету.
 
         :param account_id: Идентификатор счета.
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.get(f"/api/v1/documents/tariff-document/{account_id}")
+        return self.get(
+            f"/api/v1/documents/tariff-document/{account_id}",
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/documents/tariff-document/{account_id}")
+        )
 
     def get_contract_document_api(self, account_id: str) -> Response:
         """
-        Получение контракта по счету.
+        Получить контракта по счету.
 
         :param account_id: Идентификатор счета.
         :return: Ответ от сервера (объект httpx.Response).
         """
-        return self.get(f"/api/v1/documents/contract-document/{account_id}")
+        return self.get(
+            f"/api/v1/documents/contract-document/{account_id}",
+            # Явно передаём логическое имя маршрута
+            extensions=HTTPClientExtensions(route="/api/v1/documents/contract-document/{account_id}")
+        )
     
     def get_tariff_document(self, account_id: str) -> GetTariffDocumentResponseSchema:
         response = self.get_tariff_document_api(account_id)
