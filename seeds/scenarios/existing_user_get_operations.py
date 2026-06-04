@@ -21,11 +21,11 @@ class ExistingUserGetOperationsSeedsScenario(SeedsScenario):
                 count=300,
                 credit_card_accounts=SeedAccountsPlan(
                     count=1,
-                    purchase_operations=SeedOperationsPlan(count=5),
                     top_up_operations=SeedOperationsPlan(count=1),
-                    cash_withdrawal_operations=SeedOperationsPlan(count=1)
+                    purchase_operations=SeedOperationsPlan(count=5),
+                    cash_withdrawal_operations=SeedOperationsPlan(count=1),
                 )
-            ),
+            )
         )
 
     @property
